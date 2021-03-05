@@ -8,7 +8,7 @@ Capture finance data from 163 and generate to markdown report
 
 ## Change stock.ini by yourself
 ## Then Run below command get markdown file
->python3 Generate_Report.py
+>python Generate_Report.py
 
 
 
