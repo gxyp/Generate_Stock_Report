@@ -96,6 +96,12 @@ class G3TF163:
 		with open(localfile, "wb") as code:
 	        	code.write(r.content)
 
+	def getSeasonTable(self,stockNum):
+		StockUrl = self._getPath("zycwzb_",stockNum,self.url163head,'.html?type=season')
+		localfile = self.getSeasonFile(stockNum)
+		r = requests.get(StockUrl) 
+		with open(localfile, "wb") as code:
+	        	code.write(r.content)
 	
 	def get3Table(self,stockNum):
 		self._getAssetsTable(stockNum) 
@@ -133,10 +139,13 @@ class G3TF163:
 
 	def getLsjysjFile(self,stockNum):    # 历史交易数据
 		return self._getPath("lsjysj_",stockNum,self.localpathhead,self.localpathtail)
+	
+	def getSeasonFile(self,stockNum):   # 按季度的财务数据
+		return self._getPath("season_",stockNum,self.localpathhead,self.localpathtail)
 
 if __name__ == '__main__':
 #	print(G3TF163().getAssetsFile("600519"))
 #	G3TF163().getLsjysjTable('0',"600519")
 	stockNum = '600519'
-	StockUrl =G3TF163()._getZycwzbTable(stockNum)
+	StockUrl =G3TF163().getSeasonTable(stockNum)
 

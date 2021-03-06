@@ -63,10 +63,33 @@ def getRecentTrade(IsSH,stockNum):
 	df.drop(columns=['总市值','流通市值'],inplace=True)
 	return df
 
+def _SeasonMap(x):
+	SS = x[5] + x[6]
+	if SS == '12':
+		ChangeS = 'Q4'
+	elif SS == '09':
+		ChangeS = 'Q3'
+	elif SS == '06':
+		ChangeS = 'Q2'
+	elif SS == '03':
+		ChangeS = 'Q1'
+	else :
+		ChangeS = 'xx'
+	#return x[:4] + ChangeS 
+	return x[2:4] + ChangeS 
+
+def getSeasonDF(stockNum):
+	g3tf = gtf.G3TF163()
+	g3tf.getSeasonTable(stockNum)
+	df = pd.read_csv(g3tf.getSeasonFile(stockNum),encoding='gb18030')
+	df.set_index(['报告日期'],drop=True,append=False,inplace=True,verify_integrity=False)
+	df.rename(columns = _SeasonMap,inplace = True)	
+	return df.iloc[:,0:10]     # 季节数据取最近10个
+
 if __name__ == '__main__':
-	get3DF("600519").columns.to_series().to_csv('column_list.txt')
+#	get3DF("600519").columns.to_series().to_csv('column_list.txt')
 #	print(get3DF("600519").columns.to_series())
 #	print(get3DF("600519").loc[0,'货币资金(万元)'])
-	print(get3DF("600519").shape[1])
+	print(getSeasonDF("600519").head())
 	#print(getRecentTrade('0',"600519").to_markdown(index=False))
 

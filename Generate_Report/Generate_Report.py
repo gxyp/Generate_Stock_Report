@@ -31,6 +31,8 @@ countYear = int(conf.get('default','defaultCount'))
 today = datetime.date.today().strftime('%Y-%m-%d')      
 
 dfTrade = M1DF.getRecentTrade(IsSH,stockNum)
+dfSeason = M1DF.getSeasonDF(stockNum)
+
 a = dfTrade.loc[0,'名称']
 
 def _ParseDataFrame(df):
@@ -249,6 +251,13 @@ print (dfshow.iloc[:,0:countYear].sort_index(axis=1).to_markdown(floatfmt=".2f")
 print('评论：\n')
 print('---')
 #---------------------------------------------------------------------------------------
+
+print('11. 应Mr. He要求，增加季度数据')
+print(dfSeason.loc[['主营业务收入(万元)','主营业务利润(万元)','净利润(万元)'],:].sort_index(axis=1).to_markdown())
+print('评论：\n')
+print('---')
+#---------------------------------------------------------------------------------------
+
 
 if Print2File == True :
     sys.stdout= __console__
