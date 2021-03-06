@@ -8,10 +8,15 @@ import pandas as pd
 import datetime
 import configparser
 import os
+import matplotlib.pyplot as plt
 
 import _MergeOneDF as M1DF
 
 Print2File= True
+
+#plt.rcParams['font.sans-serif']=['SimHei'] #用来正常显示中文标签
+#plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
+
 
 curpath = os.path.dirname(os.path.realpath(__file__))
 cfgpath = os.path.join(curpath, "stock.ini")
@@ -256,9 +261,26 @@ print('---')
 #---------------------------------------------------------------------------------------
 
 print('11. 应Mr. He要求，增加季度数据')
-print(dfSeason.loc[['主营业务收入(万元)','主营业务利润(万元)','净利润(万元)'],:].sort_index(axis=1).to_markdown())
+dfSeasonM = dfSeason.loc[['主营业务收入(万元)','主营业务利润(万元)','净利润(万元)'],:].T
+dfSeasonM = dfSeasonM.apply(pd.to_numeric, errors='coerce').fillna(0, downcast='infer')
+
+dfSeasonShow = dfSeasonM[['主营业务收入(万元)','主营业务利润(万元)','净利润(万元)']].sort_index(axis=0)
+dfSeasonShow.rename(columns={'主营业务收入(万元)':'M_operating_revenue(M)','主营业务利润(万元)':'M_operating_profit(M)',\
+		'净利润(万元)':'net_profit(M)'},inplace = True)
+dfSeasonShow = dfSeasonShow / 100
+dfSeasonShow.plot.bar(figsize=(9,4))
+#plt.figure(figsize=(6.4,4.8))
+#plt.figure().set_size_inches(6, 4, forward=True)
+plt.savefig("./tmp/test.png")
+#plt.show()
+
+dfSeasonM['主营业务利润率(%)'] = dfSeasonM['主营业务利润(万元)'] / dfSeasonM['主营业务收入(万元)'] * 100
+dfSeasonM['净利率(%)'] = dfSeasonM['净利润(万元)'] / dfSeasonM['主营业务收入(万元)'] * 100
+print(dfSeasonM.T.sort_index(axis=1).to_markdown(floatfmt=".0f"))
+print('![Quarterly_report](./tmp/test.png){:height="300px" width="600px"}')
 print('评论：\n')
 print('---')
+
 #---------------------------------------------------------------------------------------
 
 

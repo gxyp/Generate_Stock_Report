@@ -82,7 +82,8 @@ def getSeasonDF(stockNum):
 	g3tf = gtf.G3TF163()
 	g3tf.getSeasonTable(stockNum)
 	df = pd.read_csv(g3tf.getSeasonFile(stockNum),encoding='gb18030')
-	df.set_index(['报告日期'],drop=True,append=False,inplace=True,verify_integrity=False)
+	df.rename(columns={'报告日期':'Quarterly_Report'},inplace=True)
+	df.set_index(['Quarterly_Report'],drop=True,append=False,inplace=True,verify_integrity=False)
 	df.rename(columns = _SeasonMap,inplace = True)	
 	return df.iloc[:,0:10]     # 季节数据取最近10个
 
