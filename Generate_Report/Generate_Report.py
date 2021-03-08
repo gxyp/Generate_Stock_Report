@@ -8,6 +8,7 @@ import pandas as pd
 import datetime
 import configparser
 import os
+import base64
 import matplotlib.pyplot as plt
 
 import _MergeOneDF as M1DF
@@ -268,18 +269,38 @@ dfSeasonShow = dfSeasonM[['主营业务收入(万元)','主营业务利润(万�
 dfSeasonShow.rename(columns={'主营业务收入(万元)':'M_operating_revenue(M)','主营业务利润(万元)':'M_operating_profit(M)',\
 		'净利润(万元)':'net_profit(M)'},inplace = True)
 dfSeasonShow = dfSeasonShow / 100
-dfSeasonShow.plot.bar(figsize=(9,4))
+ax = dfSeasonShow.plot.bar(rot=0,figsize=(10,4))
+#ax.legend(bbox_to_anchor=(1.0, 1.0))
+
 #plt.figure(figsize=(6.4,4.8))
 #plt.figure().set_size_inches(6, 4, forward=True)
 plt.savefig("./tmp/test.png")
 #plt.show()
 
+ftmp = open('./tmp/test.png','rb')
+ls_fSeason_64_encode = base64.encodestring(ftmp.read())
+ftmp.close()
+
+ls_fSeason = str(ls_fSeason_64_encode)
+ls_fSeason = ls_fSeason.replace("\\n","")
+ls_fSeason = ls_fSeason.replace("b'","")
+ls_fSeason = ls_fSeason.replace("'","")
+
 dfSeasonM['主营业务利润率(%)'] = dfSeasonM['主营业务利润(万元)'] / dfSeasonM['主营业务收入(万元)'] * 100
 dfSeasonM['净利率(%)'] = dfSeasonM['净利润(万元)'] / dfSeasonM['主营业务收入(万元)'] * 100
 print(dfSeasonM.T.sort_index(axis=1).to_markdown(floatfmt=".0f"))
-print('![Quarterly_report](./tmp/test.png){:height="300px" width="600px"}')
+
+#   print('![Quarterly_report][Quarterly_report]')
+print('![Quarterly_report](data:image/png;base64,' + ls_fSeason + ')')
+#print(ls_fSeason)
+#print(')')
+
 print('评论：\n')
 print('---')
+
+#   print('[Quarterly_report]:data:image/png;base64,' + ls_fSeason) 
+
+#print(ls_fSeason)
 
 #---------------------------------------------------------------------------------------
 
