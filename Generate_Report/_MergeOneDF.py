@@ -5,6 +5,9 @@ import pandas as pd
 import numpy as np
 import _G3TF163 as gtf
 
+def _YearMap(x):
+	return x[:4]
+
 def get3DF(stockNum):
 	g3tf = gtf.G3TF163()
 	g3tf.get3Table(stockNum)
@@ -50,6 +53,7 @@ def get3DF(stockNum):
 
 
 	dfAll = dfAll.apply(pd.to_numeric, errors='coerce').fillna(0, downcast='infer')
+	dfAll.rename(index = _YearMap,inplace = True)	
 	return dfAll
 
 
@@ -89,8 +93,8 @@ def getSeasonDF(stockNum):
 
 if __name__ == '__main__':
 #	get3DF("600519").columns.to_series().to_csv('column_list.txt')
-#	print(get3DF("600519").columns.to_series())
+	print(get3DF("600519").head())
 #	print(get3DF("600519").loc[0,'货币资金(万元)'])
-	print(getSeasonDF("600519").head())
+#	print(getSeasonDF("600519").head())
 	#print(getRecentTrade('0',"600519").to_markdown(index=False))
 

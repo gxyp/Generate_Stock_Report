@@ -89,7 +89,8 @@ class G3TF163:
 		StockUrl = StockUrl + IsSH + stockNum
 		StockUrl = StockUrl + "&start=" + ftodaym5
 		StockUrl = StockUrl + "&end=" + ftoday
-		StockUrl = StockUrl + "&fields=TCLOSE;HIGH;LOW;TOPEN;TCAP;MCAP" 
+#		StockUrl = StockUrl + "&fields=TCLOSE;HIGH;LOW;TOPEN;TCAP;MCAP" 
+		StockUrl = StockUrl + "&fields=TCLOSE;TOPEN;TCAP;MCAP" 
 
 		localfile = self.getLsjysjFile(stockNum)
 		r = requests.get(StockUrl) 
