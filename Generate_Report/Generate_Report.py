@@ -289,7 +289,8 @@ plt.savefig("./tmp/test.png")
 #plt.show()
 
 ftmp = open('./tmp/test.png','rb')
-ls_fSeason_64_encode = base64.encodestring(ftmp.read())
+ls_fSeason_64_encode = base64.b64encode(ftmp.read())
+#ls_fSeason_64_encode = base64.encodestring(ftmp.read())
 ftmp.close()
 
 ls_fSeason = str(ls_fSeason_64_encode)
