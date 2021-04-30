@@ -4,7 +4,7 @@ Capture finance data from 163 and generate to markdown report
 >cd Generate_Report
 
 ## Install requirement package
->pip install -r requirement
+>pip install -r requirements.txt
 
 ## Change stock.ini by yourself
 ## Then Run below command get markdown file
